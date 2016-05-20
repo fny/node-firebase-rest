@@ -1,0 +1,37 @@
+{
+  "name": "firebase-rest",
+  "version": "1.0.0",
+  "description": "REST Client for Firebase",
+  "main": "dist/FirebaseREST.js",
+  "typings": "./lib/FirebaseREST.d.ts",
+  "scripts": {
+    "prepublish": "test $CI || tsc",
+    "pretest": "",
+    "test": "jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fny/node-firebase-rest.git"
+  },
+  "keywords": [
+    "firebase",
+    "rest"
+  ],
+  "author": "Faraz Yashar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fny/node-firebase-rest/issues"
+  },
+  "homepage": "https://github.com/fny/node-firebase-rest#readme",
+  "dependencies": {
+    "node-fetch": "^1.5.2"
+  },
+  "devDependencies": {
+    "dotenv": "^2.0.0",
+    "eslint": "^2.11.1",
+    "eslint-config-airbnb-base": "^3.0.1",
+    "eslint-plugin-import": "^1.8.1",
+    "jasmine": "^2.4.1",
+    "typescript": "^1.8.10"
+  }
+}
