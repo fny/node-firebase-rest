@@ -2,8 +2,10 @@
 
 [![Build Status](https://travis-ci.org/fny/node-firebase-rest.svg?branch=master)](https://travis-ci.org/fny/node-firebase-rest) [![npm version](https://badge.fury.io/js/firebase-rest.svg)](http://badge.fury.io/js/firebase-rest) [![Dependencies](https://david-dm.org/fny/node-firebase-rest.svg)](https://david-dm.org/fny/node-firebase-rest)
 
- - We make requests with the [HTTP Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) via [node-fetch](https://www.npmjs.com/package/node-fetch)
- - You can bring your own Promise library by calling `FirebaseREST.setPromise(Promise)`
+ - Query support with proper JSON encoding.
+ - Requests with the [WHATWG Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) via [node-fetch](https://www.npmjs.com/package/node-fetch).
+ - You can bring your own Promise library with `FirebaseREST.setPromise(Promise)`.
+ - Typescript (if you're into that.)
 
 ## Installation
 
@@ -18,30 +20,33 @@ npm install firebase-rest --save
 const FirebaseREST = require('firebase-rest').default;
 ```
 
-Instantiate a either the `FirebaseREST.JSONClient` or the `FirebaseREST.Client`, and start making calls. What's the difference?
+Instantiate either the `FirebaseREST.JSONClient` or the `FirebaseREST.Client`, and start making calls. What's the difference?
 
- - `JSONClient` promises an HTTP fetch response where the `#body` is parsed JSON
- - `Client` promises a raw HTTP fetch response according to the standard
+ - `JSONClient` promises a Fetch-like response where the `#body` is parsed JSON
+ - `Client` promises a standards compliant Fetch response
 
 Confused yet? This `#get` example should make the difference clear:
 
 ```javascript
+// First instantiate a client with any default query parameters such as auth
 var standardClient =
   new FirebaseREST.Client('https://app.firebaseio.com', { auth: 'SECRET' });
+
 var jsonClient =
   new FirebaseREST.JSONClient('https://app.firebaseio.com', { auth: 'SECRET' });
 
+// Then start making requests
 standardClient.get('/')
   .then(res => res.json())
-  .then(json => /* do something with the json */)
+  .then(json => /* do something with the json */);
 
 jsonClient.get('/')
-  .then(res => /* do something with the res.body */)
+  .then(res => /* do something with the res.body */);
 ```
 
 If you're still confused, see "`Client` vs `JSONClient`" below for a deep dive.
 
-You make the following requests with either client:
+You can make the following requests with either client:
 
 ```javascript
 // Reading data (GET)
@@ -87,7 +92,7 @@ You can see the differences when comparing two GET requests. TLDR, you probably 
 // Standard Client
 //
 
-var responsePromise = client.get('/').then(res).then(console.log)
+const responsePromise = client.get('/').then(res).then(console.log);
 // => Body {
 //   url: 'https://app.firebaseio.com/.json?auth=SECRET',
 //   status: 200,
@@ -96,14 +101,14 @@ var responsePromise = client.get('/').then(res).then(console.log)
 //   ok: true,
 //   body: PassThrough { ... },
 //   ... }
-responsePromise.then(res => res.json()).then(console.log)
+responsePromise.then(res => res.json()).then(console.log);
 // => { db: 'contents' }
 
 //
 // JSON Client
 //
 
-jsonClient.get('/').then(console.log)
+jsonClient.get('/').then(console.log);
 // => JSONResponse {
 //   url: 'https://app.firebaseio.com/.json?auth=SECRET',
 //   status: 200,
